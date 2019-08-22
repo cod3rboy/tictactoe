@@ -23,7 +23,7 @@
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblMode = new System.Windows.Forms.Label();
             this.board = new System.Windows.Forms.GroupBox();
             this.btn20 = new System.Windows.Forms.Button();
             this.btn21 = new System.Windows.Forms.Button();
@@ -34,27 +34,27 @@
             this.btn02 = new System.Windows.Forms.Button();
             this.btn01 = new System.Windows.Forms.Button();
             this.btn00 = new System.Windows.Forms.Button();
-            this.cpuMove = new System.Windows.Forms.RadioButton();
-            this.playerMove = new System.Windows.Forms.RadioButton();
+            this.rbtnPlayer2 = new System.Windows.Forms.RadioButton();
+            this.rbtnPlayer1 = new System.Windows.Forms.RadioButton();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.lblStatus = new System.Windows.Forms.Label();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.board.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // label1
+            // lblMode
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(181, 26);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(143, 25);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Player Vs CPU";
+            this.lblMode.AutoSize = true;
+            this.lblMode.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblMode.Location = new System.Drawing.Point(181, 26);
+            this.lblMode.Name = "lblMode";
+            this.lblMode.Size = new System.Drawing.Size(143, 25);
+            this.lblMode.TabIndex = 1;
+            this.lblMode.Text = "Player Vs CPU";
             // 
             // board
             // 
@@ -167,42 +167,62 @@
             this.btn00.TabStop = false;
             this.btn00.UseVisualStyleBackColor = true;
             // 
-            // cpuMove
+            // rbtnPlayer2
             // 
-            this.cpuMove.AutoSize = true;
-            this.cpuMove.Cursor = System.Windows.Forms.Cursors.No;
-            this.cpuMove.Location = new System.Drawing.Point(142, 30);
-            this.cpuMove.Name = "cpuMove";
-            this.cpuMove.Size = new System.Drawing.Size(57, 21);
-            this.cpuMove.TabIndex = 3;
-            this.cpuMove.Text = "CPU";
-            this.cpuMove.UseVisualStyleBackColor = true;
+            this.rbtnPlayer2.AutoSize = true;
+            this.rbtnPlayer2.Cursor = System.Windows.Forms.Cursors.No;
+            this.rbtnPlayer2.Location = new System.Drawing.Point(142, 30);
+            this.rbtnPlayer2.Name = "rbtnPlayer2";
+            this.rbtnPlayer2.Size = new System.Drawing.Size(57, 21);
+            this.rbtnPlayer2.TabIndex = 3;
+            this.rbtnPlayer2.Text = "CPU";
+            this.rbtnPlayer2.UseVisualStyleBackColor = true;
             // 
-            // playerMove
+            // rbtnPlayer1
             // 
-            this.playerMove.AutoSize = true;
-            this.playerMove.Checked = true;
-            this.playerMove.Cursor = System.Windows.Forms.Cursors.No;
-            this.playerMove.Location = new System.Drawing.Point(29, 30);
-            this.playerMove.Name = "playerMove";
-            this.playerMove.Size = new System.Drawing.Size(69, 21);
-            this.playerMove.TabIndex = 3;
-            this.playerMove.TabStop = true;
-            this.playerMove.Text = "Player";
-            this.playerMove.UseVisualStyleBackColor = true;
+            this.rbtnPlayer1.AutoSize = true;
+            this.rbtnPlayer1.Checked = true;
+            this.rbtnPlayer1.Cursor = System.Windows.Forms.Cursors.No;
+            this.rbtnPlayer1.Location = new System.Drawing.Point(29, 30);
+            this.rbtnPlayer1.Name = "rbtnPlayer1";
+            this.rbtnPlayer1.Size = new System.Drawing.Size(69, 21);
+            this.rbtnPlayer1.TabIndex = 3;
+            this.rbtnPlayer1.TabStop = true;
+            this.rbtnPlayer1.Text = "Player";
+            this.rbtnPlayer1.UseVisualStyleBackColor = true;
             // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.label3);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.cpuMove);
-            this.groupBox2.Controls.Add(this.playerMove);
+            this.groupBox2.Controls.Add(this.rbtnPlayer2);
+            this.groupBox2.Controls.Add(this.rbtnPlayer1);
             this.groupBox2.Location = new System.Drawing.Point(133, 425);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(228, 103);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Current Move";
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(159, 55);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(40, 38);
+            this.label3.TabIndex = 4;
+            this.label3.Text = "X";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(49, 54);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(44, 38);
+            this.label2.TabIndex = 4;
+            this.label2.Text = "O";
             // 
             // lblStatus
             // 
@@ -231,26 +251,6 @@
             this.tableLayoutPanel1.Size = new System.Drawing.Size(509, 111);
             this.tableLayoutPanel1.TabIndex = 6;
             // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(49, 54);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(44, 39);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "O";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 19.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(159, 55);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(41, 39);
-            this.label3.TabIndex = 4;
-            this.label3.Text = "X";
-            // 
             // PlayForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -258,7 +258,7 @@
             this.ClientSize = new System.Drawing.Size(501, 648);
             this.Controls.Add(this.tableLayoutPanel1);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblMode);
             this.Controls.Add(this.board);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.MaximizeBox = false;
@@ -278,10 +278,10 @@
         }
 
         #endregion
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblMode;
         private System.Windows.Forms.GroupBox board;
-        private System.Windows.Forms.RadioButton cpuMove;
-        private System.Windows.Forms.RadioButton playerMove;
+        private System.Windows.Forms.RadioButton rbtnPlayer2;
+        private System.Windows.Forms.RadioButton rbtnPlayer1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Button btn20;
         private System.Windows.Forms.Button btn21;

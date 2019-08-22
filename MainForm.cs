@@ -19,7 +19,8 @@ namespace TicTacToe {
         }
 
         private void BtnStart_Click(object sender, EventArgs e) {
-            new DifficultyForm().Show(this);
+            if (playerVsCPU.Checked) new DifficultyForm().Show(this);
+            else new PlayForm().Show(this);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -11,16 +12,35 @@ using System.Windows.Forms;
 namespace TicTacToe {
     public partial class PlayForm : Form {
         public enum Difficulty{EASY, MEDIUM, HARD}
+        public enum Mode {PLAYERPLAYER, PLAYERCPU}
         private Difficulty level;
+        private Mode mode;
         private Game.TTTGame gameObject;
 
         private Random mRandom;
 
+        // Use this constructor to create Player vs CPU game
         public PlayForm(Difficulty level) {
             InitializeComponent();
             this.level = level;
+            this.mode = Mode.PLAYERCPU;
             gameObject = new Game.TTTGame(3, 3);
             mRandom = new Random(DateTime.Now.Millisecond);
+            lblMode.Text = "Player vs CPU";
+            rbtnPlayer1.Text = "Player";
+            rbtnPlayer2.Text = "CPU";
+        }
+        
+        // Use this constructor to create Player vs Player game
+        public PlayForm() {
+            InitializeComponent();
+            this.level = Difficulty.EASY; // No use in case of Player vs Player
+            this.mode = Mode.PLAYERPLAYER;
+            gameObject = new Game.TTTGame(3, 3);
+            mRandom = new Random(DateTime.Now.Millisecond);
+            lblMode.Text = "Player vs Player";
+            rbtnPlayer1.Text = "Player 1";
+            rbtnPlayer2.Text = "Player 2";
         }
 
         private void PlayForm_Load(object sender, EventArgs e) {
@@ -49,30 +69,52 @@ namespace TicTacToe {
             // Register CPU Move over Event Handler with the Game Object
             gameObject.CpuMoveOver += CPUMoveCompleted;
 
-            // Determine whether CPU will play first move
-            double p = mRandom.NextDouble();
-            if (p > 0.5) MakeCPUMove();
+            if(mode == Mode.PLAYERCPU) {
+                // Determine whether CPU will play first move
+                double p = mRandom.NextDouble();
+                if (p > 0.5) MakeCPUMove();
+            }
         }
         private void MakePlayerMove(object sender, EventArgs e) {
             if (gameObject.IsGameOver) return;
 
             Button btn = (Button)sender;
-            // Disable the Button and the board
-            btn.Enabled = false;
-            btn.Text = (Game.TTTGame.PLAYER_SYMBOL == Game.TTTGame.CellState.CROSS) ? "X" : "O";
-            btn.Cursor = Cursors.No;
-            gameObject.MakePlayerMove((Game.CellPos)btn.Tag);
-            if (gameObject.IsGameOver) {
-                GameOver();
-                return;
-            }
+            if(mode == Mode.PLAYERCPU) {
+                // Disable the Button and the board
+                btn.Enabled = false;
+                btn.Text = (Game.TTTGame.PLAYER1_SYMBOL == Game.TTTGame.CellState.CROSS) ? "X" : "O";
+                btn.Cursor = Cursors.No;
+                gameObject.MakePlayerMove((Game.CellPos)btn.Tag);
+                if (gameObject.IsGameOver) {
+                    GameOver();
+                    return;
+                }
 
-            MakeCPUMove();
+                MakeCPUMove();
+
+            }else if(mode == Mode.PLAYERPLAYER) {
+                btn.Enabled = false;
+                Game.TTTGame.CellState playerSymbol = Game.TTTGame.CellState.NIL;
+                if (rbtnPlayer1.Checked) {
+                    playerSymbol = Game.TTTGame.PLAYER1_SYMBOL;
+                } else if (rbtnPlayer2.Checked) {
+                    playerSymbol = Game.TTTGame.PLAYER2_SYMBOL;
+                }
+                btn.Text = (playerSymbol == Game.TTTGame.CellState.CROSS) ? "X" : "O";
+                btn.Cursor = Cursors.No;
+                if (rbtnPlayer2.Checked) rbtnPlayer1.Checked = true;
+                else rbtnPlayer2.Checked = true;
+                gameObject.MakePlayerMove((Game.CellPos)btn.Tag, playerSymbol);
+                if (gameObject.IsGameOver) {
+                    GameOver();
+                    return;
+                }
+            }
         }
 
         private void MakeCPUMove() {
             board.Enabled = false;
-            cpuMove.Checked = true;
+            rbtnPlayer2.Checked = true;
 
             switch (level){
                 case Difficulty.EASY:
@@ -101,7 +143,7 @@ namespace TicTacToe {
                 return;
             }
             board.Enabled = true;
-            playerMove.Checked = true;
+            rbtnPlayer1.Checked = true;
         }
 
         private Button GetButtonAtPosition(Game.CellPos pos) {
@@ -128,17 +170,30 @@ namespace TicTacToe {
          * Game is over and determine the result
          */
         private void GameOver() {
-            if (gameObject.PlayerWon) {
-                lblStatus.ForeColor = Color.Green;
-                lblStatus.Text = "Hurrah! You won the match!";
-                MarkWinPosition();
-            } else if (gameObject.CpuWon) {
-                lblStatus.ForeColor = Color.Red;
-                lblStatus.Text = "Sorry! You lose the match!";
-                MarkWinPosition();
-            } else if (gameObject.IsDraw) {
-                lblStatus.ForeColor = Color.Violet;
-                lblStatus.Text = "That was tough. It's a tie!";
+            if(mode == Mode.PLAYERCPU) {
+                if (gameObject.PlayerWon) {
+                    lblStatus.ForeColor = Color.Green;
+                    lblStatus.Text = "Hurrah! You won the match!";
+                    MarkWinPosition();
+                } else if (gameObject.CpuWon) {
+                    lblStatus.ForeColor = Color.Red;
+                    lblStatus.Text = "Sorry! You lose the match!";
+                    MarkWinPosition();
+                } else if (gameObject.IsDraw) {
+                    lblStatus.ForeColor = Color.Violet;
+                    lblStatus.Text = "That was tough. It's a tie!";
+                }
+            }else if(mode == Mode.PLAYERPLAYER) {
+                lblStatus.ForeColor = Color.Blue;
+                if (gameObject.IsWinnerSymbol(Game.TTTGame.PLAYER1_SYMBOL)) {
+                    lblStatus.Text = "Player 1 Winner";
+                    MarkWinPosition();
+                } else if (gameObject.IsWinnerSymbol(Game.TTTGame.PLAYER2_SYMBOL)) {
+                    lblStatus.Text = "Player 2 Winner";
+                    MarkWinPosition();
+                } else if (gameObject.IsDraw) {
+                    lblStatus.Text = "That was tough. It's a tie!";
+                }
             }
         }
     }

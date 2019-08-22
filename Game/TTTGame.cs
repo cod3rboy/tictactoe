@@ -38,7 +38,8 @@ namespace TicTacToe.Game {
         private bool mFirstCpuMove = true;
 
         // Symbols Assignment
-        public static readonly CellState PLAYER_SYMBOL = CellState.ZERO;
+        public static readonly CellState PLAYER1_SYMBOL = CellState.ZERO;
+        public static readonly CellState PLAYER2_SYMBOL = CellState.CROSS;
         public static readonly CellState CPU_SYMBOL = CellState.CROSS;
 
         private CellState mWinnerSymbol;
@@ -100,15 +101,19 @@ namespace TicTacToe.Game {
             return null;
         }
 
+
+        public void MakePlayerMove(CellPos position) {
+            MakePlayerMove(position, PLAYER1_SYMBOL);
+        }
         /**
          * This method is used to make move of the player into the grid.
          */
-        public void MakePlayerMove(CellPos position) {
+        public void MakePlayerMove(CellPos position, CellState symbol) {
             if (position.row < 0 || position.row >= mRows 
                 || position.col < 0 || position.col >= mColumns 
                 || mGrid[position.row, position.col] != CellState.NIL)
                 throw new InvalidMoveException(String.Format("Invalid move at grid cell ({0}, {1})", position.row, position.col));
-            mGrid[position.row, position.col] = PLAYER_SYMBOL;
+            mGrid[position.row, position.col] = symbol;
             // Update Game State
             UpdateGameState();
         }
@@ -139,7 +144,7 @@ namespace TicTacToe.Game {
             if (mFirstCpuMove) { // This prevents player from setting a row and a column match simultaneously
                 // Center Cell row and col
                 int cR = mRows / 2, cC = mColumns / 2;
-                if (mGrid[cR, cC] == PLAYER_SYMBOL) cC = cR = 0;
+                if (mGrid[cR, cC] == PLAYER1_SYMBOL) cC = cR = 0;
                 mGrid[cR, cC] = CPU_SYMBOL;
                 UpdateGameState();
                 CpuMoveOver(new CellPos(cR, cC));
@@ -183,10 +188,10 @@ namespace TicTacToe.Game {
             CpuMoveOver(randPos);
         }
         private bool WinMoveOfPlayer(CellPos movePos) {
-            return IsWinMove(movePos, PLAYER_SYMBOL, CPU_SYMBOL);
+            return IsWinMove(movePos, PLAYER1_SYMBOL, CPU_SYMBOL);
         }
         private bool WinMoveOfCpu(CellPos movePos) {
-            return IsWinMove(movePos, CPU_SYMBOL, PLAYER_SYMBOL);
+            return IsWinMove(movePos, CPU_SYMBOL, PLAYER1_SYMBOL);
         }
         private bool IsWinMove(CellPos movePos, CellState mPlayerSymbol, CellState mOpponentSymbol) {
 
@@ -237,7 +242,7 @@ namespace TicTacToe.Game {
             for (int c = 0; c < mColumns; c++) {
                 if (mGrid[movePos.row, c] == CPU_SYMBOL) {
                     count++;
-                } else if (mGrid[movePos.row, c] == PLAYER_SYMBOL) {
+                } else if (mGrid[movePos.row, c] == PLAYER1_SYMBOL) {
                     count = 0;
                     break;
                 }
@@ -248,7 +253,7 @@ namespace TicTacToe.Game {
             for(int r=0; r < mRows; r++) {
                 if(mGrid[r, movePos.col] == CPU_SYMBOL) {
                     count++;
-                }else if(mGrid[r, movePos.col] == PLAYER_SYMBOL) {
+                }else if(mGrid[r, movePos.col] == PLAYER1_SYMBOL) {
                     count = 0;
                     break;
                 }
@@ -262,7 +267,7 @@ namespace TicTacToe.Game {
                 for (int i = 0; i < mRows; i++) {
                     if (mGrid[i, i] == CPU_SYMBOL) {
                         count++;
-                    }else if(mGrid[i, i] == PLAYER_SYMBOL) {
+                    }else if(mGrid[i, i] == PLAYER1_SYMBOL) {
                         count = 0;
                         break;
                     }
@@ -275,7 +280,7 @@ namespace TicTacToe.Game {
                 for (int i = 0, j = mRows - 1; i < mRows && j >= 0; i++, j--) {
                     if (mGrid[i, j] == CPU_SYMBOL) {
                         count++;
-                    }else if(mGrid[i, j] == PLAYER_SYMBOL) {
+                    }else if(mGrid[i, j] == PLAYER1_SYMBOL) {
                         count = 0;
                         break;
                     }
@@ -293,7 +298,7 @@ namespace TicTacToe.Game {
         private void UpdateGameState() {
             if (CheckWin()) {
                 mGameOver = true;
-                mPlayerWins = (mWinnerSymbol == PLAYER_SYMBOL);
+                mPlayerWins = (mWinnerSymbol == PLAYER1_SYMBOL);
                 return;
             }else if (!MoveExists()) {
                 mGameOver = true;
@@ -395,6 +400,15 @@ namespace TicTacToe.Game {
                 mWinnerSymbol = rdSymbol;
                 return true;
             }
+            return false;
+        }
+
+        /**
+         * Method to match any symbol agaist a winner symbol (if any).
+         */
+        public bool IsWinnerSymbol(CellState symbol) {
+            if (mPlayerWins && symbol == PLAYER1_SYMBOL) return true;
+            if (!mPlayerWins && !mIsDraw && symbol == PLAYER2_SYMBOL) return true;
             return false;
         }
 
